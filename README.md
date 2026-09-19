@@ -1,8 +1,8 @@
-# 🎞️ T-Slider
+# 🎞️ TSlider
 
 [![npm version](https://img.shields.io/npm/v/tslider?logo=npm)](https://www.npmjs.com/package/tslider)
 [![license](https://img.shields.io/npm/l/tslider)](./LICENSE)
-[![Vercel](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://t-slider.vercel.app/)
+[![Vercel](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://tslider.vercel.app/)
 
 A lightweight and customizable slider library built with **TypeScript**, focused on smooth interactions, responsive behavior, accessibility, and a clean separation between functionality and visual styling.
 
