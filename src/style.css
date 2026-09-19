@@ -1,16 +1,43 @@
 /* SLIDE — STRUCTURAL STYLES
    ⚠️ DO NOT MODIFY
 
-   This section contains styles required for the structural
+   These styles are required for the structural
    operation of the library.
 
    The structure and behavior are defined by Slide.ts.
 
    If you want to customize the slider's appearance,
    use ONLY the section:
-
    "SLIDE — CUSTOMIZABLE STYLES"
 */
+
+/* LOCAL RESET */
+
+[data-slide='wrapper'],
+[data-slide='wrapper'] * {
+	box-sizing: border-box;
+}
+
+[data-slide='wrapper'] {
+	margin: 0;
+	padding: 0;
+}
+
+[data-slide='wrapper'] img,
+[data-slide='wrapper'] svg {
+	display: block;
+	max-width: 100%;
+}
+
+[data-slide='wrapper'] ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+[data-slide='wrapper'] button {
+	font: inherit;
+}
 
 /* WRAPPER */
 
@@ -21,13 +48,14 @@
 	cursor: grab;
 	user-select: none;
 	touch-action: pan-y;
-}
 
-[data-slide='wrapper'] img,
-[data-slide='wrapper'] svg {
-	display: block;
-	max-width: 100%;
-	height: auto;
+	--slide-control-color: rgb(255 255 255);
+	--slide-control-background: rgb(255 255 255 / 0.12);
+	--slide-control-border: rgb(255 255 255 / 0.18);
+	--slide-control-opacity: 0.9;
+	--slide-control-inactive-opacity: 0.35;
+	--slide-control-hover-background: rgb(255 255 255 / 0.2);
+	--slide-control-disabled-opacity: 0.35;
 }
 
 [data-slide='wrapper']:active {
@@ -45,17 +73,18 @@
 
 [data-slide='slide'] {
 	flex: 0 0 100%;
+	width: 100%;
 	height: 80vh;
 }
 
 /* SLIDE MEDIA */
 
 [data-slide='slide'] img,
-[data-slide='slide'] svg {
+[data-slide='slide'] svg,
+[data-slide='slide'] video {
 	width: 100%;
 	height: 100%;
 	display: block;
-
 	object-fit: cover;
 	object-position: center;
 }
@@ -63,10 +92,9 @@
 /* SLIDE — CUSTOMIZABLE STYLES
    ✅ CAN BE MODIFIED
 
-   This section contains ONLY visual styles.
+   This section contains visual styles only.
 
-   You can freely change:
-
+   You can freely customize:
    - colors
    - sizes
    - spacing
@@ -85,34 +113,11 @@
    structure and must not be removed or renamed.
 */
 
-/*
-	THEME
-
-   Change ONLY these variables to modify the main
-   control colors.
-
-   Arrows and dots use the same color to remain
-   visually synchronized.
-*/
-
-:root {
-	--slide-control-color: rgb(255 255 255);
-	--slide-control-background: rgb(255 255 255 / 0.12);
-	--slide-control-border: rgb(255 255 255 / 0.18);
-
-	--slide-control-opacity: 0.9;
-	--slide-control-inactive-opacity: 0.35;
-
-	--slide-control-hover-background: rgb(255 255 255 / 0.2);
-	--slide-control-disabled-opacity: 0.35;
-}
-
 /* CONTROLS */
 
 [data-slide-controls] {
 	position: absolute;
 	inset: 0;
-
 	pointer-events: none;
 }
 
@@ -125,13 +130,10 @@
 [data-slide-arrows] {
 	position: absolute;
 	inset: 0;
-
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-
 	padding: 0 1.5rem;
-
 	pointer-events: none;
 }
 
@@ -140,25 +142,17 @@
 [data-slide-arrow] {
 	display: grid;
 	place-items: center;
-
 	width: 2.5rem;
 	height: 2.5rem;
-
 	padding: 0;
-
 	border: 1px solid var(--slide-control-border);
 	border-radius: 50%;
-
 	background: var(--slide-control-background);
-
 	color: var(--slide-control-color);
-
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-
 	cursor: pointer;
 	pointer-events: auto;
-
 	transition:
 		opacity 0.2s ease,
 		background 0.2s ease,
@@ -178,28 +172,17 @@
 	cursor: default;
 }
 
-/*
-	ARROW ICON
-
-   The SVG is applied by Slide.ts through a CSS mask.
-
-   The color comes from:
-   --slide-control-color
-*/
+/* ARROW ICON */
 
 [data-slide-arrow-icon] {
 	display: block;
-
 	width: 1rem;
 	height: 1rem;
-
 	background-color: currentColor;
-
 	mask-image: var(--slide-arrow-icon);
 	mask-position: center;
 	mask-repeat: no-repeat;
 	mask-size: contain;
-
 	-webkit-mask-image: var(--slide-arrow-icon);
 	-webkit-mask-position: center;
 	-webkit-mask-repeat: no-repeat;
@@ -210,18 +193,13 @@
 
 [data-slide-dots] {
 	position: absolute;
-
 	left: 50%;
 	bottom: 1.5rem;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
 	gap: 0.5rem;
-
 	transform: translateX(-50%);
-
 	pointer-events: auto;
 }
 
@@ -230,18 +208,12 @@
 [data-slide-dot] {
 	display: grid;
 	place-items: center;
-
 	width: 1rem;
 	height: 1rem;
-
 	padding: 0;
-
 	border: 0;
-
 	background: transparent;
-
 	color: var(--slide-control-color);
-
 	cursor: pointer;
 }
 
@@ -249,24 +221,18 @@
 
 [data-slide-dot-icon] {
 	display: block;
-
 	width: 0.5rem;
 	height: 0.5rem;
-
 	background-color: currentColor;
-
 	mask-image: var(--slide-dot-icon);
 	mask-position: center;
 	mask-repeat: no-repeat;
 	mask-size: contain;
-
 	-webkit-mask-image: var(--slide-dot-icon);
 	-webkit-mask-position: center;
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-size: contain;
-
 	opacity: var(--slide-control-inactive-opacity);
-
 	transition:
 		opacity 0.2s ease,
 		transform 0.2s ease;
@@ -283,17 +249,12 @@
 
 [data-slide-pagination] {
 	position: absolute;
-
 	left: 1.5rem;
 	bottom: 1.5rem;
-
 	display: flex;
 	align-items: baseline;
-
 	gap: 0.35rem;
-
 	color: var(--slide-control-color);
-
 	pointer-events: auto;
 }
 
@@ -306,6 +267,7 @@
 }
 
 /* PAGINATION SEPARATOR */
+
 [data-slide-pagination-separator] {
 	opacity: 0.5;
 }
@@ -314,14 +276,11 @@
 
 [data-slide-autoplay-controls] {
 	position: absolute;
-
 	right: 1.5rem;
 	bottom: 1.5rem;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
 	pointer-events: auto;
 }
 
@@ -329,22 +288,15 @@
 
 [data-slide-autoplay] {
 	position: relative;
-
 	display: grid;
 	place-items: center;
-
 	width: 2.5rem;
 	height: 2.5rem;
-
 	padding: 0;
-
 	border: 0;
 	border-radius: 50%;
-
 	background: transparent;
-
 	color: var(--slide-control-color);
-
 	cursor: pointer;
 }
 
@@ -352,24 +304,18 @@
 
 [data-slide-autoplay-icon] {
 	position: absolute;
-
 	display: block;
-
 	width: 100%;
 	height: 100%;
-
 	background-color: currentColor;
-
 	mask-image: var(--slide-autoplay-icon);
 	mask-position: center;
 	mask-repeat: no-repeat;
 	mask-size: contain;
-
 	-webkit-mask-image: var(--slide-autoplay-icon);
 	-webkit-mask-position: center;
 	-webkit-mask-repeat: no-repeat;
 	-webkit-mask-size: contain;
-
 	transition:
 		opacity 0.2s ease,
 		transform 0.2s ease;
@@ -387,7 +333,7 @@
 	transform: scale(1);
 }
 
-/* PAUSED — manual or hover */
+/* PAUSED */
 
 [data-slide-autoplay][data-paused] [data-slide-autoplay-icon='play'],
 [data-slide-autoplay][data-hovering] [data-slide-autoplay-icon='play'] {
@@ -401,7 +347,7 @@
 	transform: scale(0.8);
 }
 
-/* HOVER */
+/* AUTOPLAY HOVER */
 
 [data-slide-autoplay][data-hovering] {
 	animation: slide-autoplay-breathe 1.8s ease-in-out infinite;
