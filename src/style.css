@@ -12,63 +12,22 @@
    "SLIDE — CUSTOMIZABLE STYLES"
 */
 
-/* RESET */
-
-html,
-body,
-div,
-a,
-img,
-u,
-ul,
-li,
-section,
-video,
-button,
-span {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-
-figure,
-section,
-img {
-	display: block;
-}
-
-body {
-	line-height: 1;
-}
-
-ul {
-	list-style: none;
-}
-
-/* SLIDE MEDIA */
-
-img,
-svg {
-	width: 100%;
-	height: auto;
-	display: block;
-	object-fit: cover;
-	object-position: bottom;
-}
-
 /* WRAPPER */
 
 [data-slide='wrapper'] {
 	position: relative;
 	overflow: hidden;
 	width: 100%;
-
 	cursor: grab;
 	user-select: none;
 	touch-action: pan-y;
+}
+
+[data-slide='wrapper'] img,
+[data-slide='wrapper'] svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
 }
 
 [data-slide='wrapper']:active {

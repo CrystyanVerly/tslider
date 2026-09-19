@@ -5,13 +5,13 @@ import dotNavigation from '../assets/controls/dots-navigation.svg';
 import playIcon from '../assets/controls/play.svg';
 import pauseIcon from '../assets/controls/pause.svg';
 
-interface SlideConfig {
+export interface SlideConfig {
 	wrapper: string;
 	rail: string;
 	options?: SlideOptions;
 }
 
-interface SlideOptions {
+export interface SlideOptions {
 	loop?: boolean;
 	itemsPerView?: number;
 	slideBy?: 'item' | 'page';
@@ -31,13 +31,13 @@ interface Position {
 	index: number;
 }
 
-interface ControlsOptions {
+export interface ControlsOptions {
 	arrows?: boolean;
 	dots?: boolean;
 	pagination?: boolean;
 }
 
-interface AutoPlayOptions {
+export interface AutoPlayOptions {
 	enabled?: boolean;
 	delay?: number;
 	pauseOnHover?: boolean;
@@ -128,10 +128,10 @@ export default class Slide {
 			},
 
 			autoplay: {
-				enabled: true,
+				enabled: false,
 				delay: 3000,
 				pauseOnHover: true,
-				controls: true,
+				controls: false,
 				...options.autoplay,
 			},
 		};
