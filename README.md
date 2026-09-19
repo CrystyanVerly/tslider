@@ -16,33 +16,33 @@ A lightweight and customizable slider library built with **TypeScript**, focused
 
 ## 🚀 Features
 
-- ↔️ Drag and swipe navigation
-- ⬅️ Previous / next navigation
-- 🔘 Dot navigation
-- 🔢 Pagination
-- 🔁 Infinite loop
-- ▶️ Autoplay
-- ⏸️ Play / pause autoplay control
-- 🖱️ Pause autoplay on hover
-- 👀 Pause autoplay when the slider is outside the viewport
-- ⌨️ Keyboard navigation
-- 📱 Responsive items per view
-- 🎯 Navigation by item or page
-- ♿ `prefers-reduced-motion` support
-- 🧩 Customizable controls
-- 📦 No UI framework required
-- 💪 Written in TypeScript
+* ↔️ Drag and swipe navigation
+* ⬅️ Previous / next navigation
+* 🔘 Dot navigation
+* 🔢 Pagination
+* 🔁 Infinite loop
+* ▶️ Autoplay
+* ⏸️ Play / pause autoplay control
+* 🖱️ Pause autoplay on hover
+* 👀 Pause autoplay when the slider is outside the viewport
+* ⌨️ Keyboard navigation
+* 📱 Responsive items per view
+* 🎯 Navigation by item or page
+* ♿ `prefers-reduced-motion` support
+* 🧩 Customizable controls
+* 📦 No UI framework required
+* 💪 Written in TypeScript
 
 ---
 
 ## 🛠️ Tech Stack
 
-- TypeScript
-- JavaScript DOM API
-- CSS
-- Pointer Events
-- `requestAnimationFrame`
-- `IntersectionObserver`
+* TypeScript
+* JavaScript DOM API
+* CSS
+* Pointer Events
+* `requestAnimationFrame`
+* `IntersectionObserver`
 
 ---
 
@@ -84,7 +84,7 @@ const slide = new Slide({
 slide.init();
 ```
 
-> The stylesheet is required: it contains the structural styles the slider needs to work.
+> The stylesheet is required: it contains the structural styles the slider needs to work. TSlider's reset styles are scoped to the slider wrapper and do not affect elements outside the component.
 
 ### Usage with React
 
@@ -175,7 +175,7 @@ slide.init();
 
 ## 🎯 Navigation
 
-T-Slider supports two navigation modes.
+TSlider supports two navigation modes.
 
 ### Item
 
@@ -224,8 +224,8 @@ Autoplay can be enabled through the configuration:
 
 ```ts
 autoplay: {
-  enabled: true,
-  delay: 3000,
+	enabled: true,
+	delay: 3000,
 }
 ```
 
@@ -233,9 +233,9 @@ It can also pause automatically when the user interacts with the slider:
 
 ```ts
 autoplay: {
-  enabled: true,
-  pauseOnHover: true,
-  controls: true,
+	enabled: true,
+	pauseOnHover: true,
+	controls: true,
 }
 ```
 
@@ -257,32 +257,65 @@ The stylesheet is divided into:
 /* SLIDE — CUSTOMIZABLE STYLES */
 ```
 
-Structural styles are responsible for the slider's operation, while the customizable section can be modified to match the project's visual design.
+Structural styles are responsible for the slider's operation and should generally not be modified.
 
-You can override the control colors with CSS variables in your own stylesheet:
+The customizable section controls the appearance of navigation arrows, dots, pagination, autoplay controls, spacing, transitions, opacity, borders, backgrounds, and other visual properties.
+
+TSlider also includes a small reset scoped to `[data-slide='wrapper']`. It does not apply a global CSS reset to the page.
+
+You can override the control colors using CSS variables directly on the slider wrapper or on a custom class:
 
 ```css
-:root {
+.my-slider {
 	--slide-control-color: rgb(255 255 255);
 	--slide-control-background: rgb(255 255 255 / 0.12);
 	--slide-control-border: rgb(255 255 255 / 0.18);
+	--slide-control-opacity: 0.9;
+	--slide-control-inactive-opacity: 0.35;
+	--slide-control-hover-background: rgb(255 255 255 / 0.2);
+	--slide-control-disabled-opacity: 0.35;
 }
 ```
 
-Colors, opacity, spacing, borders, backgrounds, transitions, and other visual properties can be customized without modifying the slider logic.
+Then apply the class to the slider wrapper:
+
+```html
+<div class="my-slider" data-slide="wrapper">
+	<div data-slide="rail">
+		<div data-slide="slide">Slide 1</div>
+		<div data-slide="slide">Slide 2</div>
+		<div data-slide="slide">Slide 3</div>
+	</div>
+</div>
+```
+
+This makes it possible to customize each slider instance independently without changing the library's source files.
+
+You can also override other visual properties from your own stylesheet:
+
+```css
+.my-slider [data-slide='slide'] {
+	height: 600px;
+}
+
+.my-slider [data-slide-arrow] {
+	width: 3rem;
+	height: 3rem;
+}
+```
 
 ---
 
 ## ♿ Accessibility
 
-tslider includes several accessibility considerations:
+TSlider includes several accessibility considerations:
 
-- Keyboard navigation using `ArrowLeft` and `ArrowRight`
-- Accessible labels for navigation controls
-- `aria-current` for the active dot
-- Focusable slider wrapper
-- Support for `prefers-reduced-motion`
-- Semantic `<button>` elements for interactive controls
+* Keyboard navigation using `ArrowLeft` and `ArrowRight`
+* Accessible labels for navigation controls
+* `aria-current` for the active dot
+* Focusable slider wrapper
+* Support for `prefers-reduced-motion`
+* Semantic `<button>` elements for interactive controls
 
 Reduced motion is detected using:
 
@@ -310,18 +343,18 @@ This makes the component safe to mount and remove dynamically, which is especial
 
 The project was built from scratch with a focus on understanding the mechanics behind a reusable slider component.
 
-- Type-safe configuration with TypeScript
-- Pointer Events for mouse and touch interaction
-- `requestAnimationFrame` for drag movement
-- Debounced resize handling
-- Dynamic slide position calculations
-- Clone-based infinite looping
-- Logical and physical slide indexes
-- Automatic navigation index calculation
-- `IntersectionObserver` for viewport visibility
-- Autoplay lifecycle management
-- Keyboard interaction
-- Component cleanup through `destroy()`
+* Type-safe configuration with TypeScript
+* Pointer Events for mouse and touch interaction
+* `requestAnimationFrame` for drag movement
+* Debounced resize handling
+* Dynamic slide position calculations
+* Clone-based infinite looping
+* Logical and physical slide indexes
+* Automatic navigation index calculation
+* `IntersectionObserver` for viewport visibility
+* Autoplay lifecycle management
+* Keyboard interaction
+* Component cleanup through `destroy()`
 
 ---
 
@@ -345,7 +378,7 @@ Available scripts:
 
 ### 📁 Project Structure
 
-```
+```text
 src/
 ├── assets/
 │   └── controls/
@@ -355,11 +388,12 @@ src/
 │       ├── play.svg
 │       └── pause.svg
 │
-├── utils/
-│   └── debounce.ts
+├── Components/
+│   ├── utils/
+│   │   └── debounce.ts
+│   └── Slide.ts
 │
-├── index.ts        # library entry point
-├── Slide.ts
+├── index.ts
 └── style.css
 
 index.html          # demo page
@@ -374,14 +408,14 @@ This project was created to practice building a reusable UI component from scrat
 
 The main goal was to understand the underlying mechanics involved in:
 
-- Dragging and swiping
-- Navigation
-- Infinite scrolling
-- Autoplay
-- Responsive behavior
-- Accessibility
-- Animation control
-- Component lifecycle
+* Dragging and swiping
+* Navigation
+* Infinite scrolling
+* Autoplay
+* Responsive behavior
+* Accessibility
+* Animation control
+* Component lifecycle
 
 ---
 
