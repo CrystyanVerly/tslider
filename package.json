@@ -2,7 +2,7 @@
 	"name": "tslider",
 	"author": "Crystyan Verly",
 	"homepage": "https://tslider.vercel.app",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Dependency-free slider/carousel in vanilla TypeScript",
 	"type": "module",
 	"main": "./dist/tslider.cjs",
