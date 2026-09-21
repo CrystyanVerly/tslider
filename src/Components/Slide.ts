@@ -314,11 +314,19 @@ export default class Slide {
 
 	private dragStart(e: PointerEvent) {
 		if (this.isAnimating) return;
+
 		this.pauseAutoplay();
 
 		const target = e.target as HTMLElement;
 
-		if (target.closest('[data-slide-controls]')) return;
+		const interactiveElement = target.closest(
+			'a, button, input, textarea, select, [contenteditable="true"], [data-slide-controls]',
+		);
+
+		if (interactiveElement) {
+			if (!this.isHovering) this.resumeAutoplay();
+			return;
+		}
 
 		e.preventDefault();
 
@@ -330,6 +338,7 @@ export default class Slide {
 		this.wrapper.setPointerCapture(e.pointerId);
 
 		this.wrapper.addEventListener('pointermove', this.dragMove);
+
 		window.addEventListener('pointerup', this.dragEnd);
 	}
 
