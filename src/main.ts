@@ -6,7 +6,7 @@ const slide = new Slide({
 	rail: `[data-slide="rail"]`,
 	options: {
 		loop: true,
-		itemsPerView: 3,
+		itemsPerView: 1,
 		slideBy: 'item', // page | item
 		controls: {
 			arrows: true,

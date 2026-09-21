@@ -65,6 +65,7 @@ export default class Slide {
 	private originalSlides: HTMLElement[] = [];
 	private physicalSlides: HTMLElement[] = [];
 	private hasClones = false;
+	private initialized = false;
 	private loopDirection: 'next' | 'prev' | null = null;
 	private isLoopTransitioning = false;
 	private isAnimating = false;
@@ -104,12 +105,9 @@ export default class Slide {
 
 		const railElement = document.querySelector<HTMLElement>(rail);
 
-		if (!wrapperElement || !railElement)
-			throw new Error(`wrapper or rail not found.`);
-
-		this.slideElements = Array.from(
-			railElement.querySelectorAll<HTMLElement>('[data-slide="slide"]'),
-		);
+		if (!wrapperElement || !railElement) {
+			throw new Error('wrapper or rail not found.');
+		}
 
 		this.wrapper = wrapperElement;
 		this.rail = railElement;
@@ -117,7 +115,8 @@ export default class Slide {
 		this.options = {
 			loop: false,
 			itemsPerView: 1,
-			slideBy: 'page', // page | item
+			slideBy: 'page',
+
 			...options,
 
 			controls: {
@@ -137,7 +136,9 @@ export default class Slide {
 		};
 
 		this.originalSlides = Array.from(
-			railElement.querySelectorAll<HTMLElement>('[data-slide="slide"]'),
+			railElement.querySelectorAll<HTMLElement>(
+				'[data-slide="slide"]:not([data-slide-clone])',
+			),
 		);
 
 		this.slideElements = [...this.originalSlides];
@@ -146,10 +147,13 @@ export default class Slide {
 	}
 
 	init() {
+		if (this.initialized) return this;
+
+		this.initialized = true;
+
 		this.wrapper.setAttribute('tabindex', '0');
 
 		this.checkReducedMotion();
-
 		this.mainListener();
 		this.createControls();
 		this.updatePosition();
@@ -160,6 +164,10 @@ export default class Slide {
 	}
 
 	destroy() {
+		if (!this.initialized) return;
+
+		//AUTOPLAY//
+
 		this.stopAutoplay();
 
 		if (this.autoplayRestartTimer !== null) {
@@ -167,13 +175,19 @@ export default class Slide {
 			this.autoplayRestartTimer = null;
 		}
 
+		//ANIMATION FRAME//
+
 		if (this.animationFrame !== null) {
 			cancelAnimationFrame(this.animationFrame);
 			this.animationFrame = null;
 		}
 
+		//OBSERVERS//
+
 		this.visibilityObserver?.disconnect();
 		this.visibilityObserver = null;
+
+		//EVENT LISTENERS//
 
 		this.wrapper.removeEventListener('pointerdown', this.dragStart);
 
@@ -182,9 +196,11 @@ export default class Slide {
 		this.wrapper.removeEventListener('keydown', this.handleKeyDown);
 
 		this.wrapper.removeEventListener('pointerenter', this.handlePointerEnter);
+
 		this.wrapper.removeEventListener('pointerleave', this.handlePointerLeave);
 
 		window.removeEventListener('resize', this.onResize);
+
 		window.removeEventListener('pointerup', this.dragEnd);
 
 		this.rail.removeEventListener('transitionend', this.handleTransitionEnd);
@@ -194,10 +210,68 @@ export default class Slide {
 			this.handleVisibilityChange,
 		);
 
+		//CONTROLS//
+
 		this.controlsElement?.remove();
 		this.controlsElement = null;
 
+		//LOOP CLONES//
+
+		this.physicalSlides.forEach((slide) => {
+			const isOriginal = this.originalSlides.includes(slide);
+
+			if (!isOriginal) slide.remove();
+		});
+
+		this.hasClones = false;
+
+		//RESTORE ORIGINAL SLIDES//
+
+		this.originalSlides.forEach((slide) => {
+			slide.style.removeProperty('flex');
+			slide.classList.remove('active');
+		});
+
+		this.physicalSlides = [...this.originalSlides];
+		this.slideElements = [...this.originalSlides];
+
+		//RESTORE RAIL//
+
+		this.rail.style.removeProperty('transform');
+		this.rail.style.removeProperty('transition');
+
+		//RESTORE WRAPPER//
+
 		this.wrapper.removeAttribute('tabindex');
+
+		//RESET POSITIONS//
+
+		this.slidePosition = [];
+
+		this.distance = {
+			initial: 0,
+			moving: 0,
+			current: 0,
+		};
+
+		this.currentX = 0;
+		this.slideIndex = 0;
+
+		//RESET LOOP STATE//
+
+		this.loopDirection = null;
+		this.isLoopTransitioning = false;
+		this.isAnimating = false;
+
+		//RESET AUTOPLAY STATE//
+
+		this.isHovering = false;
+		this.isAutoplayPaused = false;
+		this.isVisible = true;
+
+		//LIFECYCLE//
+
+		this.initialized = false;
 	}
 
 	// EVENTS
@@ -766,13 +840,20 @@ export default class Slide {
 
 		const { itemsPerView = 1 } = this.options;
 
-		const before = this.originalSlides
-			.slice(-itemsPerView)
-			.map((slide) => slide.cloneNode(true) as HTMLElement);
+		const createClone = (slide: HTMLElement) => {
+			const clone = slide.cloneNode(true) as HTMLElement;
 
-		const after = this.originalSlides
-			.slice(0, itemsPerView)
-			.map((slide) => slide.cloneNode(true) as HTMLElement);
+			clone.dataset.slideClone = '';
+
+			clone.setAttribute('aria-hidden', 'true');
+			clone.setAttribute('inert', '');
+
+			return clone;
+		};
+
+		const before = this.originalSlides.slice(-itemsPerView).map(createClone);
+
+		const after = this.originalSlides.slice(0, itemsPerView).map(createClone);
 
 		const beforeFragment = document.createDocumentFragment();
 		const afterFragment = document.createDocumentFragment();
@@ -793,6 +874,19 @@ export default class Slide {
 		);
 
 		this.hasClones = true;
+	}
+
+	private removeClones() {
+		const clones =
+			this.rail.querySelectorAll<HTMLElement>('[data-slide-clone]');
+
+		clones.forEach((clone) => {
+			clone.remove();
+		});
+
+		this.hasClones = false;
+
+		this.physicalSlides = [...this.originalSlides];
 	}
 
 	private getPhysicalIndex(index: number) {
